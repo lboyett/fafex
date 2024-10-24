@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 import video1 from "../assets/video1.mp4";
 import aboutUs1 from "../assets/about-us-1.jpeg";
 import aboutUs2 from "../assets/about-us-2.jpeg";
-import ScrollAnimations from "../scripts/ScrollAnimations.astro";
+// import ScrollAnimations from "../scripts/ScrollAnimations.astro";
 import LoadIcons from "../scripts/LoadIcons.astro";
 import aboutUs3 from "../assets/about-us-3.jpg";
 import ScrollIntoView from "../scripts/ScrollIntoView.astro";
@@ -68,7 +68,52 @@ import ScrollIntoView from "../scripts/ScrollIntoView.astro";
     </div>
   </section>
   <section class="our-services-page"></section>
-  <ScrollAnimations client:load />
-  <LoadIcons client:load />
-  <ScrollIntoView client:load />
+  <!-- <ScrollAnimations client:load /> -->
+  <!-- <LoadIcons client:load /> -->
+  <!-- <ScrollIntoView client:load /> -->
 </Layout>
+
+<script>
+  async function loadIcons() {
+    for (let i = 1; i <= 10; i++) {
+      const imgElements = [];
+      for (let j = 1; j <= 3; j++) {
+        imgElements.push(await import(`../assets/icons/icon-${i}.png`));
+        const img = document.createElement("img");
+        img.src = imgElements[j - 1].default.src;
+        document.querySelector(`.carousel-${j}`)?.appendChild(img);
+      }
+    }
+  }
+  loadIcons();
+</script>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      } else {
+        entry.target.classList.remove("show");
+      }
+    });
+  });
+  const hiddenElements = document.querySelectorAll(".hidden");
+
+  hiddenElements.forEach((el) => observer.observe(el));
+</script>
+
+<script>
+  function addEventListeners() {
+    const li = document.querySelectorAll(".navbar li");
+    li.forEach((li) => {
+      li.addEventListener("click", () => {
+        document
+          .querySelector(`.${li.getAttribute("data-scroll")}`)
+          ?.scrollIntoView({ behavior: "smooth" });
+      });
+    });
+  }
+
+  addEventListeners();
+</script>
