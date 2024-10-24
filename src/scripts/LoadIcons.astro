@@ -1,0 +1,14 @@
+<script>
+  async function loadIcons() {
+    for (let i = 1; i <= 10; i++) {
+      const imgElements = [];
+      for (let j = 1; j <= 3; j++) {
+        imgElements.push(await import(`../assets/icons/icon-${i}.png`));
+        const img = document.createElement("img");
+        img.src = imgElements[j - 1].default.src;
+        document.querySelector(`.carousel-${j}`)?.appendChild(img);
+      }
+    }
+  }
+  loadIcons();
+</script>
